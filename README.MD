@@ -60,6 +60,33 @@ A arquitetura do **SAGHA** é baseada em uma aplicação web composta por três 
 git clone https://github.com/arthurmousinho/SAGHA.git
 ```
 
+### 3. Rodando o Backend
+- Navegue até a pasta do backend pelo terminal:
+```bash
+cd backend
+```
+
+- Crie um arquivo `.env` baseado no `.env.example`, preenchendo as variáveis conforme necessário:
+```bash
+cp .env.example .env
+```
+
+- Rode o banco de dados usando o Docker:
+```bash
+docker compose up -d
+```
+
+- Instale as dependência:
+```bash
+npm install
+```
+
+- Rode o projeto:
+```bash
+npm run dev
+```
+
+
 ## Padrão de Commits
 
 Adotamos o padrão **Conventional Commits** para manter o histórico de commits claro e consistente.  

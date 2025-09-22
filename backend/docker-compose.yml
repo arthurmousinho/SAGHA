@@ -1,0 +1,11 @@
+name: sagha-db
+
+services:
+  pg:
+    image: bitnami/postgresql:latest
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=sagha-user
+      - POSTGRES_PASSWORD=sagha-password
+      - POSTGRES_DB=sagha-db
