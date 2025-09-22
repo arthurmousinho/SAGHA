@@ -1,0 +1,193 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(cuid())
+
+  email    String @unique
+  name     String
+  password String
+
+  student  Student?
+  employee Employee?
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Student {
+  id String @id @default(cuid())
+
+  userId String @unique @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  enrollment String @unique
+
+  courseId String @map("course_id")
+  course   Course @relation(fields: [courseId], references: [id])
+
+  semesterId String   @map("semester_id")
+  semester   Semester @relation(fields: [semesterId], references: [id])
+
+  collegeId String?  @unique @map("college_id")
+  college   College? @relation(fields: [collegeId], references: [id])
+
+  activities Activity[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("students")
+}
+
+model Employee {
+  id String @id @default(cuid())
+
+  name  String
+  email String @unique
+  phone String @unique
+
+  userId String @unique @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  roleId String @unique @map("role_id")
+  role   Role   @relation(fields: [roleId], references: [id])
+
+  collegeId String  @map("college_id")
+  college   College @relation(fields: [collegeId], references: [id])
+
+  activities Activity[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("employees")
+}
+
+model Role {
+  id String @id @default(cuid())
+
+  name        String @unique
+  description String
+
+  employees Employee[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("roles")
+}
+
+model College {
+  id String @id @default(cuid())
+
+  name    String
+  address String
+  city    String
+  state   String
+  zipCode String @unique @map("zip_code")
+  country String
+  phone   String @unique
+  email   String @unique
+  domain  String @unique
+
+  students  Student[]
+  courses   Course[]
+  employees Employee[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("colleges")
+}
+
+model Course {
+  id String @id @default(cuid())
+
+  name        String
+  description String
+
+  semesters Semester[]
+  students  Student[]
+
+  collegeId String?  @map("college_id")
+  college   College? @relation(fields: [collegeId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("courses")
+}
+
+model Semester {
+  id String @id @default(cuid())
+
+  name             String
+  durationInMonths Int    @map("duration_in_months")
+
+  courseId String? @map("course_id")
+  course   Course? @relation(fields: [courseId], references: [id])
+
+  students Student[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("semesters")
+}
+
+model Activity {
+  id String @id @default(cuid())
+
+  description        String
+  hoursRequested     Int            @map("hours_requested")
+  hoursApproved      Int            @map("hours_approved")
+  startDate          DateTime       @map("start_date")
+  endDate            DateTime       @map("end_date")
+  certificateFileUrl String         @map("certificate_file_url")
+  status             ActivityStatus @default(IN_ANALYSIS)
+
+  categoryId String           @map("category_id")
+  category   ActivityCategory @relation(fields: [categoryId], references: [id])
+
+  studentId String?  @map("student_id")
+  student   Student? @relation(fields: [studentId], references: [id])
+
+  employeeId String   @map("employee_id")
+  employee   Employee @relation(fields: [employeeId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("activities")
+}
+
+model ActivityCategory {
+  id String @id @default(cuid())
+
+  name        String @unique
+  description String
+
+  activities Activity[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("activity_categories")
+}
+
+enum ActivityStatus {
+  IN_ANALYSIS
+  TOTALLY_APPROVED
+  PARTIALLY_APPROVED
+  REJECTED
+}
