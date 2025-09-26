@@ -1,7 +1,6 @@
-import { error } from "console";
 import { FastifyInstance } from "fastify";
 import { ZodTypeProvider } from "fastify-type-provider-zod";
-import z, { object } from "zod";
+import z from "zod";
 import { prisma } from "../../db/prisma";
 
 export function createCollegeRoute(app: FastifyInstance) {
