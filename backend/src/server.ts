@@ -8,6 +8,7 @@ import {
     ZodTypeProvider
 } from "fastify-type-provider-zod";
 import z from "zod";
+import { createCollegeRoute } from "./routes/college/college.route";
 
 const app = fastify();
 
@@ -28,6 +29,8 @@ app.register(fastifySwagger, {
 app.register(fastifySwaggerUi, {
     routePrefix: '/docs'
 });
+
+app.register(createCollegeRoute)
 
 app.after(() => {
     app.withTypeProvider<ZodTypeProvider>().get('/', {
