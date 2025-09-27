@@ -7,13 +7,12 @@ export function updateCourseRoute(app: FastifyInstance) {
     app
         .withTypeProvider<ZodTypeProvider>()
         .put(
-            '/course/:domain/:id',
+            '/course/:id',
             {
                 schema: {
                     tags: ['courses'],
                     summary: 'Update a course',
                     params: z.object({
-                        domain: z.string(),
                         id: z.string().cuid(),
                     }),
                     body: z.object({
@@ -50,16 +49,7 @@ export function updateCourseRoute(app: FastifyInstance) {
             },
             async (request, reply) => {
                 const { name, description, durationInMonths } = request.body;
-                const { domain } = request.params;
                 const { id } = request.params;
-
-                const college = await prisma.college.findUnique({
-                    where: { domain },
-                });
-
-                if (!college) {
-                    return reply.status(404).send({ message: 'Faculdade não encontrada' });
-                }
 
                 const existingCourse = await prisma.course.findFirst({
                     where: { id },
