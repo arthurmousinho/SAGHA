@@ -16,6 +16,7 @@ import { createCourseRoute } from "./routes/course/create-course.route";
 import { updateCourseRoute } from "./routes/course/update-course.route";
 import { findCourseByIdRoute } from "./routes/course/find-course-by-id.route";
 import { createSemesterRoute } from "./routes/semester/create-semester.route";
+import { updateSemesterRoute } from "./routes/semester/update-semester.route";
 
 const app = fastify();
 
@@ -50,6 +51,7 @@ app.register(findCourseByIdRoute);
 
 // Semester routes
 app.register(createSemesterRoute);
+app.register(updateSemesterRoute);
 
 app.after(() => {
     app.withTypeProvider<ZodTypeProvider>().get('/', {
