@@ -122,6 +122,8 @@ model Course {
   semesters Semester[]
   students  Student[]
 
+  durationInMonths Int @map("duration_in_months")
+
   collegeId String?  @map("college_id")
   college   College? @relation(fields: [collegeId], references: [id])
 

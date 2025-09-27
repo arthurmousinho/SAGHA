@@ -20,20 +20,16 @@ export function registerStudentOnCollegeRoute(app: FastifyInstance) {
                             .string("O nome é obrigatório")
                             .min(3, { message: "O nome deve ter no mínimo 3 caracteres" })
                             .max(100, { message: "O nome deve ter no máximo 100 caracteres" }),
-
                         email: z
                             .string("O e-mail é obrigatório")
                             .email({ message: "O e-mail informado não é válido" }),
-
                         enrollment: z
                             .string("A matrícula é obrigatória")
                             .min(1, { message: "A matrícula não pode ser vazia" })
                             .max(20, { message: "A matrícula deve ter no máximo 20 caracteres" }),
-
                         semesterId: z
                             .string("O semestre é obrigatório")
                             .cuid({ message: "O semestre informado não é um CUID válido" }),
-
                         courseId: z
                             .string("O curso é obrigatório")
                             .cuid({ message: "O curso informado não é um CUID válido" }),
