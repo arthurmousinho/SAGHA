@@ -36,6 +36,9 @@ export function findCourseByIdRoute(app: FastifyInstance) {
 
                 const course = await prisma.course.findUnique({
                     where: { id },
+                    include: {
+                        semesters: true,
+                    }
                 });
 
                 if (!course) {
