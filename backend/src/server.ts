@@ -20,6 +20,7 @@ import { updateSemesterRoute } from "./routes/semester/update-semester.route";
 import { findSemesterByIdRoute } from "./routes/semester/find-semester-by-id.route";
 import fastifyJwt from "@fastify/jwt";
 import { loginStudentOnCollegeRoute } from "./routes/student/login-student-on-college.route";
+import { loginEmployeeOnCollegeRoute } from "./routes/employee/login-employee-on-college.route";
 
 const app = fastify();
 
@@ -74,6 +75,9 @@ app.register(findSemesterByIdRoute);
 
 // Student routes
 app.register(loginStudentOnCollegeRoute);
+
+// Employee routes
+app.register(loginEmployeeOnCollegeRoute);
 
 app.after(() => {
     app.withTypeProvider<ZodTypeProvider>().get('/', {
