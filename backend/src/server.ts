@@ -18,6 +18,8 @@ import { findCourseByIdRoute } from "./routes/course/find-course-by-id.route";
 import { createSemesterRoute } from "./routes/semester/create-semester.route";
 import { updateSemesterRoute } from "./routes/semester/update-semester.route";
 import { findSemesterByIdRoute } from "./routes/semester/find-semester-by-id.route";
+import fastifyJwt from "@fastify/jwt";
+import { loginStudentOnCollegeRoute } from "./routes/student/login-student-on-college.route";
 
 const app = fastify();
 
@@ -39,6 +41,21 @@ app.register(fastifySwaggerUi, {
     routePrefix: '/docs'
 });
 
+app.register(fastifyJwt as any, {
+    secret: process.env.JWT_SECRET || 'apenas',
+    sign: {
+        algorithm: 'HS512',
+        expiresIn: '1d',
+        issuer: 'sagha-api',
+        audience: 'sagha-frontend',
+    },
+    verify: {
+        algorithms: ['HS512'],
+        issuer: 'sagha-api',
+        audience: 'sagha-frontend',
+    }
+});
+
 // College routes
 app.register(createCollegeRoute);
 app.register(updateCollegeRoute);
@@ -54,6 +71,9 @@ app.register(findCourseByIdRoute);
 app.register(createSemesterRoute);
 app.register(updateSemesterRoute);
 app.register(findSemesterByIdRoute);
+
+// Student routes
+app.register(loginStudentOnCollegeRoute);
 
 app.after(() => {
     app.withTypeProvider<ZodTypeProvider>().get('/', {

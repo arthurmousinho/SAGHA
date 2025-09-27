@@ -86,7 +86,6 @@ npm install
 npm run dev
 ```
 
-
 ## Padrão de Commits
 
 Adotamos o padrão **Conventional Commits** para manter o histórico de commits claro e consistente.  
