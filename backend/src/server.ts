@@ -13,6 +13,7 @@ import { updateCollegeRoute } from "./routes/college/update-college.route";
 import { findCollegeByDomainRoute } from "./routes/college/find-college-by-domain.route";
 import { registerStudentOnCollegeRoute } from "./routes/college/register-student-on-college.route";
 import { createCourseRoute } from "./routes/course/create-course.route";
+import { updateCourseRoute } from "./routes/course/update-course.route";
 
 const app = fastify();
 
@@ -42,6 +43,7 @@ app.register(registerStudentOnCollegeRoute);
 
 // Course routes
 app.register(createCourseRoute);
+app.register(updateCourseRoute);
 
 app.after(() => {
     app.withTypeProvider<ZodTypeProvider>().get('/', {
