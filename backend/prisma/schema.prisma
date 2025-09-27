@@ -13,7 +13,7 @@ model User {
 
   email    String @unique
   name     String
-  password String
+  password String?
 
   student  Student?
   employee Employee?
@@ -30,7 +30,7 @@ model Student {
   userId String @unique @map("user_id")
   user   User   @relation(fields: [userId], references: [id])
 
-  enrollment String @unique
+  enrollment String
 
   courseId String @map("course_id")
   course   Course @relation(fields: [courseId], references: [id])
@@ -38,13 +38,16 @@ model Student {
   semesterId String   @map("semester_id")
   semester   Semester @relation(fields: [semesterId], references: [id])
 
-  collegeId String?  @unique @map("college_id")
-  college   College? @relation(fields: [collegeId], references: [id])
+  collegeId String  @map("college_id")
+  college   College @relation(fields: [collegeId], references: [id])
 
   activities Activity[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([collegeId, enrollment])
+  @@unique([collegeId, userId])
 
   @@map("students")
 }

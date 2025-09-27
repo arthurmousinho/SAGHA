@@ -7,7 +7,7 @@ export function updateCollegeRoute(app: FastifyInstance) {
     app
         .withTypeProvider<ZodTypeProvider>()
         .put(
-            '/college/:id',
+            '/college/:domain',
             {
                 schema: {
                     tags: ['colleges'],
@@ -46,7 +46,7 @@ export function updateCollegeRoute(app: FastifyInstance) {
                             .email('Email inválido'),
                     }),
                     params: z.object({
-                        id: z.string().cuid(),
+                        domain: z.string(),
                     }),
                     response: {
                         200: z.object({
@@ -71,11 +71,11 @@ export function updateCollegeRoute(app: FastifyInstance) {
                 }
             },
             async (request, reply) => {
-                const { id } = request.params as { id: string };
+                const { domain } = request.params;
                 const newCollegeData = request.body;
 
                 const college = await prisma.college.findUnique({
-                    where: { id },
+                    where: { domain },
                 })
 
                 if (!college) {
@@ -85,7 +85,7 @@ export function updateCollegeRoute(app: FastifyInstance) {
                 const collegeWithSameEmail = await prisma.college.findUnique({
                     where: {
                         email: newCollegeData.email,
-                        AND: { id: { not: id } }
+                        AND: { domain: { not: domain } }
                     },
                 });
 
@@ -96,7 +96,7 @@ export function updateCollegeRoute(app: FastifyInstance) {
                 const collegeWithZipCode = await prisma.college.findUnique({
                     where: {
                         zipCode: newCollegeData.zipCode,
-                        AND: { id: { not: id } }
+                        AND: { domain: { not: domain } }
                     },
                 });
 
@@ -107,7 +107,7 @@ export function updateCollegeRoute(app: FastifyInstance) {
                 const collegeWithPhone = await prisma.college.findUnique({
                     where: {
                         phone: newCollegeData.phone,
-                        AND: { id: { not: id } }
+                        AND: { domain: { not: domain } }
                     },
                 });
 
@@ -116,7 +116,7 @@ export function updateCollegeRoute(app: FastifyInstance) {
                 }
 
                 const updatedCollege = await prisma.college.update({
-                    where: { id },
+                    where: { domain },
                     data: {
                         ...newCollegeData,
                         updatedAt: new Date(),

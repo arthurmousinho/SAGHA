@@ -6,8 +6,8 @@ import { prisma } from "../../db/prisma";
 export function findCollegeByDomainRoute(app: FastifyInstance) {
     app
         .withTypeProvider<ZodTypeProvider>()
-        .put(
-            '/college/domain/:domain',
+        .get(
+            '/college/:domain',
             {
                 schema: {
                     tags: ['colleges'],

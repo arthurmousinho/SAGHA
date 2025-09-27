@@ -11,6 +11,7 @@ import z from "zod";
 import { createCollegeRoute } from "./routes/college/create-college.route";
 import { updateCollegeRoute } from "./routes/college/update-college.route";
 import { findCollegeByDomainRoute } from "./routes/college/find-college-by-domain.route";
+import { registerStudentOnCollegeRoute } from "./routes/college/register-student-on-college.route";
 
 const app = fastify();
 
@@ -36,6 +37,7 @@ app.register(fastifySwaggerUi, {
 app.register(createCollegeRoute);
 app.register(updateCollegeRoute);
 app.register(findCollegeByDomainRoute);
+app.register(registerStudentOnCollegeRoute);
 
 app.after(() => {
     app.withTypeProvider<ZodTypeProvider>().get('/', {
