@@ -15,6 +15,8 @@ export function createActivityCategoryRoute(app: FastifyInstance) {
                     body: z.object({
                         name: z.string().min(1).max(255),
                         description: z.string().max(1024),
+                        maxHourTotal: z.number().int(),
+                        maxHourPerSemester: z.number().int(),
                     }),
                     response: {
                         201: z.object({
@@ -22,6 +24,8 @@ export function createActivityCategoryRoute(app: FastifyInstance) {
                                 id: z.string().cuid(),
                                 name: z.string(),
                                 description: z.string(),
+                                maxHourTotal: z.number().int(),
+                                maxHourPerSemester: z.number().int(),
                                 createdAt: z.string(),
                                 updatedAt: z.string(),
                             })
@@ -32,7 +36,7 @@ export function createActivityCategoryRoute(app: FastifyInstance) {
                 }
             },
             async (request, reply) => {
-                const { name, description } = request.body;
+                const { name, description, maxHourTotal, maxHourPerSemester } = request.body;
 
                 const categoryAlreadyExists = await prisma.activityCategory.findUnique({
                     where: { name }
@@ -46,6 +50,8 @@ export function createActivityCategoryRoute(app: FastifyInstance) {
                     data: {
                         name,
                         description,
+                        maxHourTotal,
+                        maxHourPerSemester,
                     }
                 })
 

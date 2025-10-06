@@ -8,6 +8,7 @@ import {
     ZodTypeProvider
 } from "fastify-type-provider-zod";
 import z from "zod";
+import fastifyMultipart from "@fastify/multipart";
 import { createCollegeRoute } from "./routes/college/create-college.route";
 import { updateCollegeRoute } from "./routes/college/update-college.route";
 import { findCollegeByDomainRoute } from "./routes/college/find-college-by-domain.route";
@@ -23,12 +24,14 @@ import { loginStudentOnCollegeRoute } from "./routes/student/login-student-on-co
 import { loginEmployeeOnCollegeRoute } from "./routes/employee/login-employee-on-college.route";
 import { createActivityCategoryRoute } from "./routes/category/create-activity-category.route";
 import { findAllActivitiesCategoryRoute } from "./routes/category/find-all-categories.route";
+import { createActivityRoute } from "./routes/activity/create-activity.route";
 
 const app = fastify();
 
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
 
+app.register(fastifyMultipart);
 app.register(fastifySwagger, {
     openapi: {
         info: {
@@ -73,6 +76,9 @@ app.register(findCourseByIdRoute);
 // Activity Category routes
 app.register(createActivityCategoryRoute);
 app.register(findAllActivitiesCategoryRoute);
+
+// Activity routes
+app.register(createActivityRoute)
 
 // Semester routes
 app.register(createSemesterRoute);
