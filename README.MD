@@ -47,6 +47,18 @@ A arquitetura do **SAGHA** é baseada em uma aplicação web composta por três 
 - A API envia os arquivos para o Cloudinary, que retorna uma **URL pública**.  
 - Essa URL é então utilizada pelo frontend para exibir os arquivos diretamente na interface do usuário.  
 
+## Protótipos de Alta Fidelidade
+<p align="center">
+  <img src="./.github/ui/img1.jpeg" width="500" style="border-radius:10px; margin:5px;" />
+  <img src="./.github/ui/img2.jpeg" width="500" style="border-radius:10px; margin:5px;" />
+  <img src="./.github/ui/img3.jpeg" width="500" style="border-radius:10px; margin:5px;" />
+  <img src="./.github/ui/img4.jpeg" width="500" style="border-radius:10px; margin:5px;" />
+  <img src="./.github/ui/img5.jpeg" width="500" style="border-radius:10px; margin:5px;" />
+  <img src="./.github/ui/img6.jpeg" width="500" style="border-radius:10px; margin:5px;" />
+  <img src="./.github/ui/img7.jpeg" width="500" style="border-radius:10px; margin:5px;" />
+  <img src="./.github/ui/img8.jpeg" width="500" style="border-radius:10px; margin:5px;" />
+</p>
+
 ## Rodando o Projeto Localmente
 
 ### 1. Downloads Necessários
