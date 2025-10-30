@@ -11,7 +11,7 @@ datasource db {
 model User {
   id String @id @default(cuid())
 
-  email    String @unique
+  email    String  @unique
   name     String
   password String?
 
@@ -48,7 +48,6 @@ model Student {
 
   @@unique([collegeId, enrollment])
   @@unique([collegeId, userId])
-
   @@map("students")
 }
 
@@ -133,6 +132,7 @@ model Course {
   @@map("courses")
 }
 
+//TODO COLOCAR DATA DE INICIO E DE FIM
 model Semester {
   id String @id @default(cuid())
 
@@ -153,22 +153,22 @@ model Semester {
 model Activity {
   id String @id @default(cuid())
 
-  description        String
-  hoursRequested     Int            @map("hours_requested")
-  hoursApproved      Int            @map("hours_approved")
-  startDate          DateTime       @map("start_date")
-  endDate            DateTime       @map("end_date")
-  certificateFileUrl String         @map("certificate_file_url")
-  status             ActivityStatus @default(IN_ANALYSIS)
-
-  categoryId String           @map("category_id")
-  category   ActivityCategory @relation(fields: [categoryId], references: [id])
+  description    String
+  hoursRequested Int                  @map("hours_requested")
+  hoursApproved  Int?                 @map("hours_approved")
+  startDate      DateTime             @map("start_date")
+  endDate        DateTime             @map("end_date")
+  status         ActivityStatus       @default(IN_ANALYSIS)
+  category       ActivityCategoryType
 
   studentId String?  @map("student_id")
   student   Student? @relation(fields: [studentId], references: [id])
 
-  employeeId String   @map("employee_id")
-  employee   Employee @relation(fields: [employeeId], references: [id])
+  certificateFile File   @relation(fields: [certificateId], references: [id])
+  certificateId   String @unique @map("certificate_id")
+
+  employeeId String?   @map("employee_id")
+  employee   Employee? @relation(fields: [employeeId], references: [id])
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -176,23 +176,35 @@ model Activity {
   @@map("activities")
 }
 
-model ActivityCategory {
+model File {
   id String @id @default(cuid())
 
-  name        String @unique
-  description String
+  url         String @unique
+  name        String
+  bucket      String
+  sizeInBytes Int    @map("size_in_bytes")
+  mimeType    String @map("mime_type")
 
-  activities Activity[]
+  activity Activity?
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  @@map("activity_categories")
+  @@map("files")
 }
 
+// TODO PADRONIZAR OS TIPOS DE CATEGORIA (SEGUIR MODELO DO iCEV)
 enum ActivityStatus {
   IN_ANALYSIS
   TOTALLY_APPROVED
   PARTIALLY_APPROVED
   REJECTED
+}
+
+enum ActivityCategoryType {
+  EXTENCAO
+  ENSINO
+  PESQUISA
+  ESTAGIO
+  REPRESENTACAO_ESTUDANTIL
 }
