@@ -132,6 +132,7 @@ model Course {
   @@map("courses")
 }
 
+//TODO COLOCAR DATA DE INICIO E DE FIM
 model Semester {
   id String @id @default(cuid())
 
@@ -153,14 +154,12 @@ model Activity {
   id String @id @default(cuid())
 
   description    String
-  hoursRequested Int            @map("hours_requested")
-  hoursApproved  Int?           @map("hours_approved")
-  startDate      DateTime       @map("start_date")
-  endDate        DateTime       @map("end_date")
-  status         ActivityStatus @default(IN_ANALYSIS)
-
-  categoryId String           @map("category_id")
-  category   ActivityCategory @relation(fields: [categoryId], references: [id])
+  hoursRequested Int                  @map("hours_requested")
+  hoursApproved  Int?                 @map("hours_approved")
+  startDate      DateTime             @map("start_date")
+  endDate        DateTime             @map("end_date")
+  status         ActivityStatus       @default(IN_ANALYSIS)
+  category       ActivityCategoryType
 
   studentId String?  @map("student_id")
   student   Student? @relation(fields: [studentId], references: [id])
@@ -175,22 +174,6 @@ model Activity {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("activities")
-}
-
-model ActivityCategory {
-  id String @id @default(cuid())
-
-  name               String @unique
-  maxHourTotal       Int    @map("max_hour_limit")
-  maxHourPerSemester Int    @map("max_hour_per_semester")
-  description        String
-
-  activities Activity[]
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@map("activity_categories")
 }
 
 model File {
@@ -210,9 +193,18 @@ model File {
   @@map("files")
 }
 
+// TODO PADRONIZAR OS TIPOS DE CATEGORIA (SEGUIR MODELO DO iCEV)
 enum ActivityStatus {
   IN_ANALYSIS
   TOTALLY_APPROVED
   PARTIALLY_APPROVED
   REJECTED
+}
+
+enum ActivityCategoryType {
+  EXTENCAO
+  ENSINO
+  PESQUISA
+  ESTAGIO
+  REPRESENTACAO_ESTUDANTIL
 }

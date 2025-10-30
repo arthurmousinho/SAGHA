@@ -1,30 +1,38 @@
 import { cloudinaryClient } from "./cloudinary-client";
-import { z } from "zod";
+import { MultipartFile } from "@fastify/multipart";
 
 export async function uploadDataToCloudinary(
     bucket: string,
     fileId: string,
-    file: z.core.File
+    file: MultipartFile
 ) {
-    return new Promise((resolve, reject) => {
-        cloudinaryClient.uploader.upload_stream(
-            {
-                folder: bucket,
-                filename_override: fileId,
-                public_id: fileId,
-                unique_filename: true,
-                transformation: [
-                    { quality: 'auto' },
-                    { fetch_format: 'auto' },
-                ],
-            },
-            (error, result) => {
-                if (error || !result) {
-                    console.log(error);
-                    return reject(`Erro ao fazer upload`);
+    return new Promise(async (resolve, reject) => {
+        try {
+            // Converter o arquivo para buffer
+            const buffer = await file.toBuffer();
+            
+            cloudinaryClient.uploader.upload_stream(
+                {
+                    folder: bucket,
+                    filename_override: fileId,
+                    public_id: fileId,
+                    unique_filename: true,
+                    transformation: [
+                        { quality: 'auto' },
+                        { fetch_format: 'auto' },
+                    ],
+                },
+                (error, result) => {
+                    if (error || !result) {
+                        console.error('Erro no Cloudinary:', error);
+                        return reject(new Error('Erro ao fazer upload'));
+                    }
+                    resolve(result.secure_url);
                 }
-                resolve(result.secure_url);
-            },
-        ).end(file.arrayBuffer());
+            ).end(buffer);
+        } catch (error) {
+            console.error('Erro ao processar arquivo:', error);
+            reject(new Error('Erro ao processar arquivo para upload'));
+        }
     });
 }

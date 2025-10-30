@@ -22,8 +22,6 @@ import { findSemesterByIdRoute } from "./routes/semester/find-semester-by-id.rou
 import fastifyJwt from "@fastify/jwt";
 import { loginStudentOnCollegeRoute } from "./routes/student/login-student-on-college.route";
 import { loginEmployeeOnCollegeRoute } from "./routes/employee/login-employee-on-college.route";
-import { createActivityCategoryRoute } from "./routes/category/create-activity-category.route";
-import { findAllActivitiesCategoryRoute } from "./routes/category/find-all-categories.route";
 import { createActivityRoute } from "./routes/activity/create-activity.route";
 
 const app = fastify();
@@ -72,10 +70,6 @@ app.register(registerStudentOnCollegeRoute);
 app.register(createCourseRoute);
 app.register(updateCourseRoute);
 app.register(findCourseByIdRoute);
-
-// Activity Category routes
-app.register(createActivityCategoryRoute);
-app.register(findAllActivitiesCategoryRoute);
 
 // Activity routes
 app.register(createActivityRoute)
